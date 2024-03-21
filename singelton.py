@@ -16,10 +16,7 @@ class Singleton(object):
         if not Singleton.instance:
             Singleton.instance = Singleton.SingletonObject()
             
-            return Singleton.instance
-        
-        else:
-            return Singleton.instance
+        return Singleton.instance
             
     def __getattr__(self, __name: str) -> Any:
         return getattr(self.instance , __name)
@@ -35,9 +32,6 @@ s2 = Singleton()
 s2.val = "24"
 print(s)
 print(s2)
-# <__main__.Singleton.SingletonObject object at 0x000002103BE63D60> <-> 12
-# <__main__.Singleton.SingletonObject object at 0x000002103BE63D60> <-> 24
-# <__main__.Singleton.SingletonObject object at 0x000002103BE63D60> <-> 24
 
 from typing import Any
 from source.logs import Loggers
@@ -73,3 +67,31 @@ for i in range(15):
     logger.warning(f"{i + 1}"*(i+1))
     logger.error(f"errorrrrrrrr")
 
+
+# simple singleton 
+
+class Singleton3:
+    
+    def __new__(cls):
+        if not hasattr(cls , "instance"):
+            cls.instance = super().__new__(cls)
+            return cls.instance
+        
+
+# singleton with metaclass
+
+class Singleton4(type):
+    
+    _instance = {}
+    
+    def __call__(cls, *args: Any, **kwds: Any) -> Any:
+        if not cls._instance.get(cls):
+            cls._instance[cls] = super().__call__(*args , **kwds)
+        return cls._instance[cls]
+    
+class Test_s4(metaclass = Singleton4):
+    pass
+
+l1 = Test_s4()
+l2 = Test_s4()
+print(l1 , l2)
