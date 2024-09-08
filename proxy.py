@@ -56,7 +56,7 @@ class Bank(PardakhtKardan):
         self.card = card
         
     def do_pay(self):
-        if self._mojodi_hesab:
+        if self._mojodi_hesab():
             print("bank : hazine pardakht shod")
             return True
             
@@ -73,6 +73,7 @@ class Card(PardakhtKardan):
         self.card = input("card khod ra vared konid")
         self.bank.set_card(card=self.card)
         return self.bank.do_pay()
+    
 class You:
     
     def __init__(self) -> None:
